@@ -4,6 +4,8 @@ WITH tb_daily AS (
     SELECT DISTINCT IdCliente, substr(DtCriacao,0,11) AS dtDia
 
     FROM transacoes
+
+    WHERE DtCriacao < '{date}'
 ),
 
 tb_idade_base AS(
@@ -39,9 +41,9 @@ tb_life_cycle AS (
                 WHEN t1.qtdDiasPrimTransacao <=  7 THEN '01 - Curioso'
                 WHEN t1.qtdDiasUltimaTransacao <= 7 AND t2.qtdiasPenultimaTransacao - t1.qtdDiasUltimaTransacao < 15 THEN '02 - Ativo'
                 WHEN t1.qtdDiasUltimaTransacao BETWEEN 8 AND 14 THEN '03 - Inativo'
-                WHEN t1.qtdDiasUltimaTransacao BETWEEN 15 AND 28 THEN '04 - Dormindo'
-                WHEN t1.qtdDiasUltimaTransacao > 28 THEN '05 - Churn'
-                WHEN t1.qtdDiasUltimaTransacao <= 7 AND t2.qtdiasPenultimaTransacao - t1.qtdDiasUltimaTransacao BETWEEN 15 AND 28 THEN '02 - Reativado'
+                WHEN t1.qtdDiasUltimaTransacao BETWEEN 15 AND 27 THEN '04 - Dormindo'
+                WHEN t1.qtdDiasUltimaTransacao >= 28 THEN '05 - Churn'
+                WHEN t1.qtdDiasUltimaTransacao <= 7 AND t2.qtdiasPenultimaTransacao - t1.qtdDiasUltimaTransacao BETWEEN 15 AND 27 THEN '02 - Reativado'
                 WHEN t1.qtdDiasUltimaTransacao <= 7 AND t2.qtdiasPenultimaTransacao - t1.qtdDiasUltimaTransacao > 28 THEN '02 - Renascido'
             END AS clienteLifeCycle
 
@@ -49,5 +51,11 @@ tb_life_cycle AS (
     LEFT JOIN tb_penultima_ativacao as t2 ON t1.IdCliente = t2.IdCliente
 )
 
-select clienteLifeCycle, count(*)
-from tb_life_cycle group by clienteLifeCycle
+SELECT
+    date('{date}', '-1 day') AS dtRef,
+    IdCliente,
+    qtdDiasPrimTransacao,
+    qtdDiasUltimaTransacao,
+    qtdiasPenultimaTransacao,
+    clienteLifeCycle
+FROM tb_life_cycle;
