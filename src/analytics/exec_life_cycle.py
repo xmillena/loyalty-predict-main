@@ -11,9 +11,16 @@ query = import_query("life_cycle.sql")
 
 engine_app = sqlalchemy.create_engine("sqlite:///../../data/loyalty-system/database.db")
 engine_analytical =  sqlalchemy.create_engine("sqlite:///../../data/analytics/database.db")
+#%%
 
-df = pd.read_sql(query, engine_app)
-df.head()
-df.to_sql("life_cycle", engine_analytical, index=False, if_exists="append")
+dates = ['2025-01-01', '2025-02-01', '2025-03-01', '2025-04-01', 
+         '2025-05-01', '2025-06-01', '2025-07-01', '2025-08-01', '2025-09-01', 
+         '2025-10-01', '2025-11-01', '2025-12-01']
+
+for i in dates:
+    query_format = query.format(date=i)
+    df = pd.read_sql(query_format, engine_app)
+    df.to_sql("life_cycle", engine_analytical, index=False, if_exists="append")
 
  
+# %%

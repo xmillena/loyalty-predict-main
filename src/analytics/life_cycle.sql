@@ -12,10 +12,10 @@ tb_idade_base AS(
     SELECT 
         IdCliente, 
         --min(DtDia) AS dtPrimTransaco,
-        cast(max(julianday('now') - julianday(dtDia)) AS int) AS qtdDiasPrimTransacao,
+        cast(max(julianday('{date}') - julianday(dtDia)) AS int) AS qtdDiasPrimTransacao,
         
         --max(DtDia) AS dtUltimaTransaco,
-        cast(min(julianday('now') - julianday(dtDia)) AS int) AS qtdDiasUltimaTransacao
+        cast(min(julianday('{date}') - julianday(dtDia)) AS int) AS qtdDiasUltimaTransacao
 
     FROM tb_daily
     GROUP BY IdCliente
@@ -28,7 +28,7 @@ tb_rn AS (
 ),
 
 tb_penultima_ativacao AS (
-    SELECT *, cast(julianday('now') - julianday(dtDia) AS int) AS qtdiasPenultimaTransacao
+    SELECT *, cast(julianday('{date}') - julianday(dtDia) AS int) AS qtdiasPenultimaTransacao
     FROM tb_rn
     WHERE rn = 2
 ),
