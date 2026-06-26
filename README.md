@@ -54,5 +54,3 @@ Confira as ferramentas necessárias para estar confortável em acompanhar o proj
 - [Plataforma de Cursos](https://www.kaggle.com/datasets/teocalvo/teomewhy-education-platform)
 
 
-> [!NOTE]
-> As lives serão de segunda a sexta. Havendo necessidade de avançar por mais de uma semana, seguiremos realizando transmissões.
